@@ -1,7 +1,9 @@
-// import axios from 'axios';
+import axios from 'axios';
 import { products } from './data.js';
 import { db } from './dbConnect.js';
 // const url = 'https://www.exove.com/sample/interviewdata';
+
+//sample translation
 const translations = [
     { language: 'eng', text: '' },
     { language: 'fin', text: '' },
@@ -20,30 +22,6 @@ const translations = [
 // };
 
 // get data from the database
-// const fetchExistingDataFromDatabase = async () => {
-//     try {
-//         const q = 'select * from products'
-
-//        db.query(q, (err, data) => {
-
-//             if (err) {
-//                 throw new Error(err)
-
-//             }
-//             if (data) {
-//                 console.log("we hab data")
-//                 const products = data.map(row => ({ ...row }));
-//                return products
-//             }
-//             else{
-//                 return []
-//             } 
-//         })
-       
-//     } catch (error) {
-//         throw new Error('Failed to fetch data from the the Database: ' + error.message);
-//     }
-// }
 const fetchExistingDataFromDatabase = () => {
     return new Promise((resolve, reject) => {
         const q = 'SELECT * FROM products';
@@ -65,7 +43,7 @@ const fetchExistingDataFromDatabase = () => {
 const postCategory = async (newData) => {
 
     try {
-        const categories = newData.products?.flatMap(p => p.categories)
+        const categories = newData.flatMap(p => p.categories)
             .reduce((acc, category) => {
                 if (!acc[category.id]) {
                     acc[category.id] = category;
@@ -98,18 +76,18 @@ const postCategory = async (newData) => {
             })
 
         });
-        // then we call the insert product and other collection transaction to avoid products lucking categories
+        // then we call the insert product and other collections transaction to avoid products lucking categories
         postData(newData)
     } catch (error) {
         console.log(error)
     }
 }
 
-// Function to insert data
+// Function to insert product data
 const postData = async (newData) => {
     await db.query('START TRANSACTION');
     try {
-        newData.products.forEach(async product => {
+        newData.forEach(async product => {
 
             // Parse variations, an product id to each varitions
             const variations = product.variations.map(v => {
@@ -123,7 +101,7 @@ const postData = async (newData) => {
             await db.query('INSERT INTO products (id, name, description) VALUES (?, ?, ?)',
                 [product.id, product.name, product.description]);
 
-            // insert product into category
+            // schema to create relationship between products and categories
             product.categories.forEach(async cat => {
                 await db.query('INSERT INTO productCategories (productid, categoryid) VALUES (?, ?)',
                     [product.id, cat.id]);
@@ -173,26 +151,32 @@ const postData = async (newData) => {
 
 const updateDataFromAPI = async () => {
     try {
-        let newData = products
+        let newData;
         // const apiData = await fetchDataFromAPI();
-        const apiData =products
+        const apiData = products
         const dbData = await fetchExistingDataFromDatabase();
         if (dbData.length > 0) {
             const existingProductIds = dbData?.map(product => product.id);
             newData = apiData?.products?.filter(apiProduct => !existingProductIds?.includes(apiProduct.id));
-console.log(newData)
         }
-        // if (newData?.products?.length > 0) {
-        //     await postCategory(newData);
-        // }
+
+        if (newData?.length > 0) {
+            console.log('found new data and its name is :', newData)
+            await postCategory(newData);
+        }
+        else{
+            console.log('found no new data and its name is , you are upto date')
+        }
     } catch (error) {
         console.error('Error while updating data from the API:', error);
     }
 };
 
-// const updateDataPeriodically = async () => {
-//     setInterval(updateDataFromAPI, 5 * 60 * 1000);
-// };
+const updateDataPeriodically =  async () => {
+    
+    setInterval(updateDataFromAPI,8000);
+};
+ await updateDataPeriodically();
 
-await updateDataFromAPI();
+
 

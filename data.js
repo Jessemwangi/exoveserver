@@ -26,6 +26,31 @@ export const products ={
         ]
       },
       {
+        "id" : "350a-3cc0-44cc-9bc9-a55dad15",
+        "name" : "Black DOOM® T-shirt",
+        "description" : "Cool T-shirt with DOOM logo.",
+        "categories" : [
+          {
+            "id" : "ced9a008-6dda-412b-8b79-4cd2274a0566",
+            "name" : "Gaming apparel"
+          }
+        ],
+        "variations" : [
+          {
+            "size" : "S",
+            "price" : 70.000
+          },
+          {
+            "size" : "M",
+            "price" : 65.000
+          },
+          {
+            "size" : "L",
+            "price" : 85.000
+          }
+        ]
+      },
+      {
         "id" : "a2d6471b-ceeb-4c3f-a1ec-70a603fdcc70",
         "name" : "Minecraft coffee mug",
         "description" : "Green coffee mug with Minecraft logo.",
