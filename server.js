@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { products } from './data.js';
+// import { products } from './data.js';
 import { db } from './dbConnect.js';
 // const url = 'https://www.exove.com/sample/interviewdata';
 
@@ -12,14 +12,14 @@ const translations = [
 ]
 
 // Get data from endpoint
-// const fetchDataFromAPI = async () => {
-//     try {
-//         const { data } = await axios.get(url)
-//         return data;
-//     } catch (error) {
-//         throw new Error('Failed to fetch data from the API: ' + error.message);
-//     }
-// };
+const fetchDataFromAPI = async () => {
+    try {
+        const { data } = await axios.get(url)
+        return data;
+    } catch (error) {
+        throw new Error('Failed to fetch data from the API: ' + error.message);
+    }
+};
 
 // get data from the database
 const fetchExistingDataFromDatabase = () => {
@@ -152,8 +152,8 @@ const postData = async (newData) => {
 const updateDataFromAPI = async () => {
     try {
         let newData;
-        // const apiData = await fetchDataFromAPI();
-        const apiData = products
+        const apiData = await fetchDataFromAPI();
+        // const apiData = products
         const dbData = await fetchExistingDataFromDatabase();
         if (dbData.length > 0) {
             const existingProductIds = dbData?.map(product => product.id);
@@ -164,7 +164,7 @@ const updateDataFromAPI = async () => {
             console.log('found new data and its name is :', newData)
             await postCategory(newData);
         }
-        else{
+        else {
             console.log('found no new data and its name is , you are upto date')
         }
     } catch (error) {
@@ -172,11 +172,11 @@ const updateDataFromAPI = async () => {
     }
 };
 
-const updateDataPeriodically =  async () => {
-    
-    setInterval(updateDataFromAPI,8000);
+const updateDataPeriodically = async () => {
+
+    setInterval(updateDataFromAPI, 8000);
 };
- await updateDataPeriodically();
+await updateDataPeriodically();
 
 
 
