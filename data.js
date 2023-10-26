@@ -94,10 +94,3 @@ export const products ={
     ],
     "results" : 3
   }
-
-
-
-//   select  concat(ppl.first_name , ' ' , ppl.last_name) as name ,ifnull(group_concat(ph.number), 'N/A') as phone
-// from people ppl 
-// left join phones ph on ppl.id = ph.user_id
-// group by ppl.id
