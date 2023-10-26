@@ -1,7 +1,7 @@
 import axios from 'axios';
 // import { products } from './data.js';
 import { db } from './dbConnect.js';
-// const url = 'https://www.exove.com/sample/interviewdata';
+const url = 'https://www.exove.com/sample/interviewdata';
 
 //sample translation
 const translations = [

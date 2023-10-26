@@ -2,11 +2,11 @@
 import dotenv from 'dotenv';
 dotenv.config();
 export const MSQLDbConfigs ={
-host:'127.0.0.1',
-port:3306,
-user:"exove",
-password:"J69HvORqJRLSNyI2MA",
-database:"exove",
+host:process.env.MSQHOST,
+port:process.env.MSQPORT,
+user:process.env.MSQUSER,
+password:process.env.MSQPASSWORD,
+database:process.env.MSQDATABASE,
 allowPublicKeyRetrieval: true
 
 }
