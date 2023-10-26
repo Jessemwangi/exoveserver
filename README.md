@@ -20,7 +20,9 @@ This project involves writing code to fetch data from a product API (URL) and sa
    ```bash
 node server.js
 ```
+### database
 
+Database script can be found in a file called 'database.sql' 
 ## Key Features
 ### Data Retrieval and Storage
 

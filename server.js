@@ -174,7 +174,7 @@ const updateDataFromAPI = async () => {
 
 const updateDataPeriodically = async () => {
 
-    setInterval(updateDataFromAPI, 8000);
+    setInterval(updateDataFromAPI, 5 * 60 * 1000);
 };
 await updateDataPeriodically();
 
